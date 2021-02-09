@@ -1,29 +1,9 @@
 {
-    "AWSEBDockerrunVersion": 2,
+    "family": "scorekeep",
+    "networkMode":"awsvpc",
+    
     "containerDefinitions": [
-         {
-          "name": "scorekeep-frontend",
-          "image": "$$ACCOUNT_ID$$.dkr.ecr.$$REGION$$.amazonaws.com/scorekeep-frontend",
-          "cpu": 32,
-          "memoryReservation": 256,
-          "portMappings" : [
-              {
-                  "hostPort": 80,
-                  "containerPort": 80
-              }
-          ],
-          "links": [
-            "scorekeep-api"
-          ],
-          "logConfiguration": {
-              "logDriver": "awslogs",
-              "options": {
-                  "awslogs-group": "scorekeep",
-                  "awslogs-region": "$$REGION$$",
-                  "awslogs-stream-prefix": "scorekeep/frontend"
-              }
-          }
-         },
+
          {
           "name": "xray-daemon",
           "image": "$$ACCOUNT_ID$$.dkr.ecr.$$REGION$$.amazonaws.com/xray-daemon",
@@ -31,7 +11,6 @@
           "memoryReservation": 256,
           "portMappings" : [
               {
-                  "hostPort": 2000,
                   "containerPort": 2000,
                   "protocol": "udp"
               }
@@ -53,17 +32,12 @@
           "environment": [
               { "name" : "AWS_REGION", "value" : "$$REGION$$" },
               { "name" : "NOTIFICATION_TOPIC", "value" : "arn:aws:sns:$$REGION$$:$$ACCOUNT_ID$$:scorekeep-notifications" },
-              { "name" : "AWS_XRAY_DAEMON_ADDRESS", "value" : "xray-daemon:2000" }
           ],
           "portMappings" : [
               {
-                  "hostPort": 5000,
                   "containerPort": 5000
               }
-          ],
-          "links": [
-            "xray-daemon"
-          ],
+          ]
           "logConfiguration": {
               "logDriver": "awslogs",
               "options": {
@@ -75,7 +49,7 @@
          }
     ],
     "executionRoleArn": "arn:aws:iam::$$ACCOUNT_ID$$:role/scorekeepExecutionRole",
-    "taskRoleArn": "arn:aws:iam::$$ACCOUNT_ID$$:role/scorekeepRole",
+    "taskRoleArn": "arn:aws:iam::$$ACCOUNT_ID$$:role/scorekeepExecutionRole",
     "cpu": ".25 vcpu",
     "memory": "1 gb"
 }
