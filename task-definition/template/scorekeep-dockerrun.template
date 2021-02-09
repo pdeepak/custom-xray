@@ -31,7 +31,7 @@
           "memoryReservation": 512,
           "environment": [
               { "name" : "AWS_REGION", "value" : "$$REGION$$" },
-              { "name" : "NOTIFICATION_TOPIC", "value" : "arn:aws:sns:$$REGION$$:$$ACCOUNT_ID$$:scorekeep-notifications" },
+              { "name" : "NOTIFICATION_TOPIC", "value" : "arn:aws:sns:$$REGION$$:$$ACCOUNT_ID$$:scorekeep-notifications" }
           ],
           "portMappings" : [
               {
